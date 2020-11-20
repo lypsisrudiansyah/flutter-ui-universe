@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_universe/constants.dart';
 import 'package:flutter_universe/data.dart';
+import 'package:flutter_universe/screens/detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,11 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [gradientStartColor, gradientEndColor],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.3, 0.7]
-            ),
+                colors: [gradientStartColor, gradientEndColor],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.3, 0.7]),
           ),
           child: SafeArea(
             child: Column(
@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemWidth: MediaQuery.of(context).size.width - 2 * 64,
                     layout: SwiperLayout.STACK,
                     pagination: SwiperPagination(
-                      // builder: RectSwiperPaginationBuilder(activeSize: Size(10, 5), space: 10, color: Colors.blue)
                       builder: DotSwiperPaginationBuilder(
                         size: 5,
                         activeSize: 10,
@@ -86,9 +85,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(context, PageRouteBuilder(pageBuilder: null))
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, a, b) => DetailScreen(
+                                planetInfo: planets[index],
+                              ),
+                            ),
+                          );
                         },
-                                              child: Stack(
+                        child: Stack(
                           children: [
                             Column(
                               children: [
@@ -100,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   color: Colors.white,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
+                                    padding: const EdgeInsets.all(25.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -151,7 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               ],
                             ),
-                            Image.asset(planets[index].iconImage),
+                            Hero(
+                              tag: planets[index].position,
+                              child: Image.asset(planets[index].iconImage),
+                            ),
                           ],
                         ),
                       );
